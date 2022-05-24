@@ -10,6 +10,13 @@ export default function App() {
   const [page,setPage]= React.useState(1);
   const [movies, setMovies] = React.useState([]);
   const [rerender,setRerender]=React.useState(true);
+
+    useEffect(()=>{
+        if(!rerender)
+            return;
+        fetchApiCall()
+    });
+
   const fetchApiCall = () => {
       setRerender(true);
     fetch("https://api.themoviedb.org/3/discover/movie?api_key=08799be9aacb2dcaf355c9426c2f4899&page="+page, {
@@ -26,14 +33,11 @@ export default function App() {
           console.log(err);
         });
   }
+
   const renderItem = ({ item }) => (
       <Card object={item}/>
   );
-  useEffect(()=>{
-      if(!rerender)
-          return;
-      fetchApiCall()
-  });
+
   return (
       <View style={{flex:1}}>
         <Header/>
@@ -54,7 +58,7 @@ export default function App() {
                   </View>
               }
           </SafeAreaView>
-      </View>
+        </View>
       </View>
   );
 }
